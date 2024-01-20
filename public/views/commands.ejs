@@ -1,0 +1,43 @@
+<!-- commands.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCON Commandes</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <script type="text/javascript" src="/scripts/script.js"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen flex-col gap-4">
+    <div class="bg-white p-8 rounded-md shadow-md w-full max-w-lg flex flex-col gap-4">
+        <h1 class="text-2xl font-semibold">RCON Commands</h1>
+
+        <form class="flex flex-col gap-4" id="commandForm" action="/sendCommand" method="post">
+            <div class="flex flex-col gap-2">
+                <label for="command" class="block text-sm font-medium text-gray-600">Commande RCON :</label>
+
+                <div class="flex gap-2">
+                    <input type="text" id="command" name="command" required class="p-2 border rounded-md w-full">
+                    <button type="button" onclick="sendRconCommand()" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="flex flex-col gap-2">
+            <label for="command" class="block text-sm font-medium text-gray-600">Result :</label>
+            <div id="responseDiv" class="border p-4 rounded-md size-sm text-gray-600 max-h-96 overflow-y-auto">
+
+            </div>
+        </div>
+
+        <form action="/disconnect" method="post" class="pt-4">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded flex mx-auto">Logout</button>
+        </form>
+    </div>
+
+    <span>Powered by <a class="text-red-900" target="_blank" href="https://www.verygames.net/">VeryGames</a></span>
+</body>
+
+</html>

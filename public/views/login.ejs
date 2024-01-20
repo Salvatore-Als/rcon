@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCON</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <script type="text/javascript" src="/scripts/script.js"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen flex-col gap-4">
+    <div class="bg-white p-8 rounded-md shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-semibold mb-4">RCON Login</h1>
+
+        <form class="flex flex-col gap-4" id="loginForm" action="/connect" method="post">
+            <div class="flex flex-col gap-2">
+                <label for="ip" class="block text-sm font-medium text-gray-600">IP :</label>
+                <input type="text" id="ip" name="ip" required class="mt-1 p-2 border rounded-md w-full">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="port" class="block text-sm font-medium text-gray-600">Port :</label>
+                <input type="text" id="port" name="port" required class="mt-1 p-2 border rounded-md w-full">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="password" class="block text-sm font-medium text-gray-600">Password :</label>
+                <input type="password" id="password" name="password" required class="mt-1 p-2 border rounded-md w-full">
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label for="captcha" class="block text-sm font-medium text-gray-600">Captcha :</label>
+
+                <div class="flex gap-2">
+                    <input type="text" id="captcha" name="captcha" required class="mt-1 p-2 border rounded-md w-full">
+                    <div id="captchaSvg"><%- captcha %></div>
+                </div>
+            </div>
+
+            <div id="errorDiv" class="text-red-500">
+
+            </div>
+
+            <button type="button" onclick="connectRcon()" class="flex mx-auto bg-blue-500 text-white px-4 py-2 rounded">Connect</button>
+        </form>
+    </div>
+
+    <span>Powered by <a class="text-red-900" target="_blank" href="https://www.verygames.net/">VeryGames</a></span>
+</body>
+
+</html>
