@@ -67,6 +67,7 @@ class App {
         this.app.use(express.static(dir));
         this.app.set('views', dir + "/views");
         this.app.set('view engine', 'ejs');
+        this.app.set('trust proxy', 'loopback, linklocal, uniquelocal');
 
         const connectLimiter = rateLimit({
             windowMs: 5 * 60 * 1000,
