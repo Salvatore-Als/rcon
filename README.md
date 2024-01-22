@@ -9,7 +9,7 @@ The api can be use without webinterface by calling the route.
 
 Style made with ***Tailwind***
 
-### Configuration
+### Configuration `.env`
 
 ```.env
 PORT=3002
