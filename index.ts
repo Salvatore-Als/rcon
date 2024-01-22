@@ -51,7 +51,7 @@ class App {
 
     constructor() {
         this.app.use(session({
-            secret: 'Auz_ae721_47bAZRA_1é1Z4',
+            secret: process.env.COOKIE_SECRET_KEY.toString(),
             resave: false,
             saveUninitialized: true,
             cookie: {
