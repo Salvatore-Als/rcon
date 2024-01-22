@@ -142,7 +142,7 @@ class App {
                 req.session.rconInfo = req.body;
                 res.sendStatus(200);
             } catch (error) {
-                res.status(500).json({ error: error });
+                res.status(500).send({ error: error.code ? error.code : error ?? "Unknown error" });
             }
         });
 
