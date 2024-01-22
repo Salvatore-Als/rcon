@@ -103,7 +103,6 @@ class App {
         this.app.post('/connect', connectLimiter, async (req: Request, res: express.Response) => {
 
             const { captcha, ip, password, port } = req.body;
-
             const requestedCaptcha: string = req.session.captcha;
 
             if (this.isNullOrEmpty(requestedCaptcha)) {
@@ -143,7 +142,7 @@ class App {
                 req.session.rconInfo = req.body;
                 res.sendStatus(200);
             } catch (error) {
-                res.send(500).send({ error: "Invalid rcon", captcha: this.newCaptchaSvg(req) });
+                res.status(500).json({ error: error });
             }
         });
 
