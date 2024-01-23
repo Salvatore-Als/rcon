@@ -77,7 +77,6 @@ class App {
             max: 5,
             handler: (req: Request, res: express.Response, next: express.NextFunction) => {
                 if (this.debug) {
-                    console.log("next");
                     return next();
                 }
 
@@ -93,7 +92,6 @@ class App {
             max: 100,
             handler: (req: Request, res: express.Response, next: express.NextFunction) => {
                 if (this.debug) {
-                    console.log("next");
                     return next();
                 }
 
