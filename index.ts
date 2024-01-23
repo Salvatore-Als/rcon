@@ -48,6 +48,7 @@ class App {
     private app = express();
     private port: number = parseInt(process.env.PORT);
     private rconController: RconController = new RconController();
+    private debug: boolean = false;
 
     constructor() {
         this.app.use(session({
@@ -58,6 +59,8 @@ class App {
                 maxAge: 10 * 60 * 1000,
             },
         }));
+
+        this.debug = process.env.DEBUG == "true";
     };
 
     run() {
@@ -72,7 +75,12 @@ class App {
         const connectLimiter = rateLimit({
             windowMs: 5 * 60 * 1000,
             max: 5,
-            handler: (req: Request, res: express.Response) => {
+            handler: (req: Request, res: express.Response, next: express.NextFunction) => {
+                if (this.debug) {
+                    console.log("next");
+                    return next();
+                }
+
                 const timeLeft = Math.ceil((req.rateLimit.resetTime - Date.now()) / 1000);
                 res.status(429).json({
                     error: `Too many requests, please try again in ${timeLeft} seconds.`,
@@ -83,7 +91,12 @@ class App {
         const commandLimiter = rateLimit({
             windowMs: 3 * 60 * 1000,
             max: 100,
-            handler: (req: Request, res: express.Response) => {
+            handler: (req: Request, res: express.Response, next: express.NextFunction) => {
+                if (this.debug) {
+                    console.log("next");
+                    return next();
+                }
+
                 const timeLeft = Math.ceil((req.rateLimit.resetTime - Date.now()) / 1000);
                 res.status(429).json({
                     error: `Too many requests, please try again in ${timeLeft} seconds.`,
@@ -103,21 +116,24 @@ class App {
         this.app.post('/connect', connectLimiter, async (req: Request, res: express.Response) => {
 
             const { captcha, ip, password, port } = req.body;
-            const requestedCaptcha: string = req.session.captcha;
 
-            if (this.isNullOrEmpty(requestedCaptcha)) {
-                res.status(400).send({ error: "Unable to validate captcha, please refresh", captcha: this.newCaptchaSvg(req) });
-                return;
-            }
+            if (!this.debug) {
+                const requestedCaptcha: string = req.session.captcha;
 
-            if (this.isNullOrEmpty(captcha)) {
-                res.status(400).send({ error: "Captcha can not be null or empty", captcha: this.newCaptchaSvg(req) });
-                return;
-            }
+                if (this.isNullOrEmpty(requestedCaptcha)) {
+                    res.status(400).send({ error: "Unable to validate captcha, please refresh", captcha: this.newCaptchaSvg(req) });
+                    return;
+                }
 
-            if (captcha != requestedCaptcha) {
-                res.status(403).send({ error: 'Invalid captcha', captcha: this.newCaptchaSvg(req) });
-                return;
+                if (this.isNullOrEmpty(captcha)) {
+                    res.status(400).send({ error: "Captcha can not be null or empty", captcha: this.newCaptchaSvg(req) });
+                    return;
+                }
+
+                if (captcha != requestedCaptcha) {
+                    res.status(403).send({ error: 'Invalid captcha', captcha: this.newCaptchaSvg(req) });
+                    return;
+                }
             }
 
             if (this.isNullOrEmpty(ip)) {
@@ -142,7 +158,7 @@ class App {
                 req.session.rconInfo = req.body;
                 res.sendStatus(200);
             } catch (error) {
-                res.status(500).send({ error: error.code ? error.code : error ?? "Unknown error" });
+                res.status(500).send({ error: error.code ? error.code : error?.toString() ?? "Unknown error" });
             }
         });
 
